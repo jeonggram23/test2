@@ -8,10 +8,10 @@
 <body>
 
     <a href="{% url 'posts:index' %}">Home</a>
-    <a href="">create</a>
+    <a href="{% url 'posts:create' %}">create</a>
 
     {%block body%}
-    
+
     {%endblock%}
 </body>
 </html>

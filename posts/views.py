@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post, Comment
+from .form import PostForm, CommentForm
 
 # Create your views here.
 
@@ -22,3 +23,23 @@ def detail(request, id):
     }
 
     return render(request, 'detail.html', context)
+
+
+def create(request):
+    
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('posts:index')
+        
+    else:
+        form = PostForm()
+
+    context = {
+        'form':form
+    }
+
+    return render(request, 'form.html', context)
+
+
