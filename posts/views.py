@@ -17,9 +17,14 @@ def index(request):
 def detail(request, id):
 
     post = Post.objects.get(id=id)
+    comment_form = CommentForm()
+
+    comment_list = Comment.objects.filter(post=post)
 
     context = {
-        'post': post
+        'post': post,
+        'comment_form': comment_form,
+        'comment_list': comment_list,
     }
 
     return render(request, 'detail.html', context)
@@ -43,3 +48,14 @@ def create(request):
     return render(request, 'form.html', context)
 
 
+def comment_create(request, post_id):
+    comment_form = CommentForm(request.POST)
+
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+
+        comment.post_id = post_id
+
+        comment.save()
+
+        return redirect('posts:detail', id=post_id)
